@@ -61,7 +61,7 @@ import { OrganizationChartNodeCollapseEvent, OrganizationChartNodeExpandEvent, O
                     <div [attr.data-pc-section]="'lineDown'" class="p-organizationchart-line-down"></div>
                 </td>
             </tr>
-            <tr [ngClass]="!leaf && node.expanded ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-lines" [@childState]="'in'" [attr.data-pc-section]="'lines'">
+            <!-- <tr [ngClass]="!leaf && node.expanded ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-lines" [@childState]="'in'" [attr.data-pc-section]="'lines'">
                 <ng-container *ngIf="node.children && node.children.length === 1">
                     <td [attr.data-pc-section]="'lineCell'" [attr.colspan]="colspan">
                         <div [attr.data-pc-section]="'lineDown'" class="p-organizationchart-line-down"></div>
@@ -73,12 +73,24 @@ import { OrganizationChartNodeCollapseEvent, OrganizationChartNodeExpandEvent, O
                         <td [attr.data-pc-section]="'lineRight'" class="p-organizationchart-line-right" [ngClass]="{ 'p-organizationchart-line-top': !last }">&nbsp;</td>
                     </ng-template>
                 </ng-container>
-            </tr>
-            <tr [ngClass]="!leaf && node.expanded ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-nodes" [@childState]="'in'" [attr.data-pc-section]="'nodes'">
+            </tr> -->
+            <ng-container *ngFor="let child of node.children">
+                <tr [ngClass]="!leaf && node.expanded ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-nodes" [@childState]="'in'" [attr.data-pc-section]="'nodes'">
+                    <td colspan="2" [attr.data-pc-section]="'nodeCell'">
+                        <table class="p-organizationchart-table" pOrganizationChartNode [node]="child" [collapsible]="collapsible && node.children && node.children.length > 0"></table>
+                    </td>
+                </tr>
+                <tr [ngClass]="!leaf && node.expanded ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-lines" [@childState]="'in'" [attr.data-pc-section]="'lines'">
+                    <td [attr.data-pc-section]="'lineCell'" [attr.colspan]="colspan">
+                        <div [attr.data-pc-section]="'lineDown'" class="p-organizationchart-line-down"></div>
+                    </td>
+                </tr>
+            </ng-container>
+            <!-- <tr [ngClass]="!leaf && node.expanded ? 'p-organizationchart-node-visible' : 'p-organizationchart-node-hidden'" class="p-organizationchart-nodes" [@childState]="'in'" [attr.data-pc-section]="'nodes'">
                 <td *ngFor="let child of node.children" colspan="2" [attr.data-pc-section]="'nodeCell'">
                     <table class="p-organizationchart-table" pOrganizationChartNode [node]="child" [collapsible]="collapsible && node.children && node.children.length > 0"></table>
                 </td>
-            </tr>
+            </tr> -->
         </tbody>
     `,
     animations: [trigger('childState', [state('in', style({ opacity: 1 })), transition('void => *', [style({ opacity: 0 }), animate(150)]), transition('* => void', [animate(150, style({ opacity: 0 }))])])],
